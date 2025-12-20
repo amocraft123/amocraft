@@ -360,49 +360,161 @@
                 grid-template-columns: 1fr;
             }
         }
+
+
+        /* Header Button (Price List) */
+        .header-price-btn {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .header-price-btn:hover {
+            background: #f5a623;
+            border-color: #f5a623;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 166, 35, 0.3);
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 35, 50, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid #f5a623;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-modal-btn:hover {
+            color: #ff5e57;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .modal-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2d5a5e;
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header-price-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+        }
     </style>
 </head>
 
 <body>
     <!-- Шапка -->
     <div class="header">
+        <button class="header-price-btn" onclick="openModal()">Прайс-лист</button>
         <div class="container">
             <div class="logo-container">
                 <!-- Усовершенствованный SVG логотип -->
                 <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2d5a5e" />
-                            <stop offset="100%" style="stop-color:#3d6a6e" />
+                            <stop offset="0%" style="stop-color:#2d5a5e"></stop>
+                            <stop offset="100%" style="stop-color:#3d6a6e"></stop>
                         </linearGradient>
                         <linearGradient id="letterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ffa836" />
-                            <stop offset="100%" style="stop-color:#f5a623" />
+                            <stop offset="0%" style="stop-color:#ffa836"></stop>
+                            <stop offset="100%" style="stop-color:#f5a623"></stop>
                         </linearGradient>
                     </defs>
 
                     <!-- Шестиугольник -->
                     <path d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z" fill="url(#hexGrad)" stroke="#3d6a6e"
-                        stroke-width="4" />
+                        stroke-width="4"></path>
 
                     <!-- Внутренний шестиугольник (эффект глубины) -->
                     <path d="M100 35 L160 70 L160 130 L100 165 L40 130 L40 70 Z" fill="none"
-                        stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+                        stroke="rgba(255,255,255,0.1)" stroke-width="2"></path>
 
                     <!-- Буква A (стилизованная) -->
                     <path
                         d="M85 140 L75 140 L90 70 Q100 55 110 70 L125 140 L115 140 L110 120 L90 120 Z M92 110 L108 110 L100 80 Z"
-                        fill="url(#letterGrad)" stroke="#ffa836" stroke-width="2" stroke-linejoin="round" />
+                        fill="url(#letterGrad)" stroke="#ffa836" stroke-width="2" stroke-linejoin="round"></path>
 
                     <!-- Подсветка на букве A -->
                     <path d="M95 75 Q100 65 105 75" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3"
-                        stroke-linecap="round" />
+                        stroke-linecap="round"></path>
                 </svg>
 
                 <div class="logo-text-main">AmoCraft</div>
             </div>
             <div class="tagline">Профессиональная интеграция и настройка AmoCRM</div>
-            <div class="subtitle">Помогаем малому и среднему бизнесу зарабатывать больше через CRM</div>
         </div>
     </div>
 
@@ -423,7 +535,6 @@
 
             <div class="highlight-box">
                 <strong>Наша миссия:</strong> сделать так, чтобы AmoCRM работала на ваш бизнес, а не вы на неё.
-                Никаких "как у всех" решений — только индивидуальная настройка под ваши процессы.
             </div>
 
             <div class="stats">
@@ -479,7 +590,7 @@
                     <h3 class="service-title">Отчёты и контроль</h3>
                     <ul class="service-list">
                         <li>Настраиваем отчёты <strong>под руководителя</strong></li>
-                        <li>Объясняем, что именно смотреть (а не просто «вот график»)</li>
+                        <li>Объясняем, что именно смотреть</li>
                         <li>Помогаем видеть, кто работает, а кто имитирует</li>
                     </ul>
                 </div>
@@ -490,7 +601,7 @@
                     <ul class="service-list">
                         <li>Объясняем менеджерам <strong>как и зачем</strong> пользоваться системой</li>
                         <li>Даём инструкции или видео</li>
-                        <li>Отвечаем на вопросы после запуска, а не исчезаем</li>
+                        <li>Отвечаем на вопросы после запуска</li>
                     </ul>
                 </div>
 
@@ -498,7 +609,7 @@
                 <div class="service-card">
                     <h3 class="service-title">Поддержка после внедрения</h3>
                     <ul class="service-list">
-                        <li><strong>Не бросаем</strong> после оплаты</li>
+                        <li><strong>Сопровождаем</strong> после оплаты</li>
                         <li>Оперативно устраняем технические проблемы</li>
                         <li>Донастраиваем систему, когда процесс меняется</li>
                     </ul>
@@ -522,17 +633,20 @@
                 <div class="why-card">
                     <div class="why-icon">2</div>
                     <h3 class="why-title">Быстрый старт</h3>
-                    <p class="why-text">Понимаем, что время — деньги. Запускаем систему в работу максимально быстро.</p>
+                    <p class="why-text">Понимаем, что время - деньги. Запускаем систему в работу максимально быстро.</p>
                 </div>
 
                 <div class="why-card">
                     <div class="why-icon">3</div>
                     <h3 class="why-title">Честность</h3>
-                    <p class="why-text">Говорим как есть. Если что-то не нужно — скажем прямо. Не навязываем лишнее.</p>
+                    <p class="why-text">Говорим как есть. Если что-то не нужно - скажем прямо. Не навязываем лишнее.</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Fuuter content -->
+    <!-- Цены (Old Section Removed) -->
 
     <!-- CTA -->
     <div class="cta-section">
@@ -550,19 +664,19 @@
                 <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="hexGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2d5a5e" />
-                            <stop offset="100%" style="stop-color:#3d6a6e" />
+                            <stop offset="0%" style="stop-color:#2d5a5e"></stop>
+                            <stop offset="100%" style="stop-color:#3d6a6e"></stop>
                         </linearGradient>
                         <linearGradient id="letterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ffa836" />
-                            <stop offset="100%" style="stop-color:#f5a623" />
+                            <stop offset="0%" style="stop-color:#ffa836"></stop>
+                            <stop offset="100%" style="stop-color:#f5a623"></stop>
                         </linearGradient>
                     </defs>
                     <path d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z" fill="url(#hexGrad2)" stroke="#3d6a6e"
-                        stroke-width="4" />
+                        stroke-width="4"></path>
                     <path
                         d="M85 140 L75 140 L90 70 Q100 55 110 70 L125 140 L115 140 L110 120 L90 120 Z M92 110 L108 110 L100 80 Z"
-                        fill="url(#letterGrad2)" />
+                        fill="url(#letterGrad2)"></path>
                 </svg>
                 <div class="footer-logo-text">AMOCRAFT</div>
             </div>
@@ -571,6 +685,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Popup -->
+    <div class="modal-overlay" id="priceModal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="toggleModal()">&times;</div>
+            <div class="modal-icon">📋</div>
+            <h2 class="modal-title">Прайс-лист</h2>
+            <p class="modal-text">Данный раздел скоро появится</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('priceModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal(event) {
+            // Close only if clicked on overlay or close button
+            if (event.target.id === 'priceModal') {
+                toggleModal();
+            }
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('priceModal');
+            if (modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            } else {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    </script>
 </body>
 
 </html>
