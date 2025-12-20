@@ -361,12 +361,17 @@
             }
         }
 
-
-        /* Header Button (Price List) */
-        .header-price-btn {
+        /* Header Buttons */
+        .header-btn-container {
             position: absolute;
             top: 30px;
             right: 40px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .header-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
@@ -377,15 +382,26 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             cursor: pointer;
-            z-index: 100;
         }
 
-        .header-price-btn:hover {
+        .header-btn:hover {
             background: #f5a623;
             border-color: #f5a623;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(245, 166, 35, 0.3);
             color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header-btn-container {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
         }
 
         /* Modal Styles */
@@ -423,6 +439,10 @@
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             border: 2px solid #f5a623;
+            max-height: 90vh;
+            /* Limit height */
+            overflow-y: auto;
+            /* Enable scrolling */
         }
 
         .modal-overlay.active .modal-content {
@@ -438,6 +458,8 @@
             cursor: pointer;
             transition: color 0.2s;
             line-height: 1;
+            z-index: 10;
+            /* Ensure above scroll */
         }
 
         .close-modal-btn:hover {
@@ -461,15 +483,32 @@
             font-size: 18px;
             color: #555;
             line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Modal List Styling */
+        .modal-text ul {
+            text-align: left;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .modal-subtitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d5a5e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .header-price-btn {
+            .header-btn-container {
                 position: relative;
                 top: auto;
                 right: auto;
                 margin-bottom: 20px;
-                display: inline-block;
+                display: flex;
             }
         }
     </style>
@@ -478,7 +517,12 @@
 <body>
     <!-- Шапка -->
     <div class="header">
-        <button class="header-price-btn" onclick="openModal()">Прайс-лист</button>
+        <div class="header-btn-container">
+            <button class="header-btn" onclick="openModal('priceModal')">Прайс-лист</button>
+            <button class="header-btn" onclick="openModal('scheduleModal')">График работы</button>
+            <button class="header-btn" onclick="openModal('tzModal')">Памятка клиенту</button>
+            <a href="https://wa.me/77782573264" target="_blank" class="header-btn">Связаться</a>
+        </div>
         <div class="container">
             <div class="logo-container">
                 <!-- Усовершенствованный SVG логотип -->
@@ -686,31 +730,83 @@
         </div>
     </div>
 
-    <!-- Modal Popup -->
-    <div class="modal-overlay" id="priceModal" onclick="closeModal(event)">
+    <!-- Modal Popup: Price -->
+    <div class="modal-overlay" id="priceModal" onclick="closeModal(event, 'priceModal')">
         <div class="modal-content">
-            <div class="close-modal-btn" onclick="toggleModal()">&times;</div>
+            <div class="close-modal-btn" onclick="toggleModal('priceModal')">&times;</div>
             <div class="modal-icon">📋</div>
             <h2 class="modal-title">Прайс-лист</h2>
             <p class="modal-text">Данный раздел скоро появится</p>
         </div>
     </div>
 
+    <!-- Modal Popup: Schedule -->
+    <div class="modal-overlay" id="scheduleModal" onclick="closeModal(event, 'scheduleModal')">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="toggleModal('scheduleModal')">&times;</div>
+            <div class="modal-icon">🕒</div>
+            <h2 class="modal-title">График работы</h2>
+            <p class="modal-text">
+                График работы компании:<br>
+                <strong>с 10:00 до 18:00</strong><br>
+                с Пн по Пт
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal Popup: TZ Memo -->
+    <div class="modal-overlay" id="tzModal" onclick="closeModal(event, 'tzModal')">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="toggleModal('tzModal')">&times;</div>
+            <div class="modal-icon">📝</div>
+            <h2 class="modal-title">Памятка для клиента</h2>
+            <div class="modal-text" style="text-align: left;">
+                <p><strong>Как составить идеальное ТЗ для CRM?</strong></p>
+                <p>Чтобы мы могли настроить amoCRM именно под ваш бизнес, ответьте на эти вопросы:</p>
+
+                <span class="modal-subtitle">1. Зачем вам CRM?</span>
+                <p>Какую главную проблему вы хотите решить? (напр. теряем заявки, нет контроля продаж)</p>
+
+                <span class="modal-subtitle">2. Как вы продаете сейчас?</span>
+                <p>Опишите путь клиента от "увидел рекламу" до "купил".</p>
+                <p><em>Пример: Заявка -> Звонок -> КП -> Счет -> Оплата.</em></p>
+
+                <span class="modal-subtitle">3. Откуда приходят клиенты?</span>
+                <ul>
+                    <li>Сайт</li>
+                    <li>Instagram / соцсети</li>
+                    <li>WhatsApp / Telegram</li>
+                    <li>Звонки</li>
+                </ul>
+
+                <span class="modal-subtitle">4. Кто будет работать?</span>
+                <p>Сколько менеджеров? Есть ли РОП?</p>
+
+                <span class="modal-subtitle">5. Что автоматизировать?</span>
+                <p>Какие рутинные действия отнимают время? (напр. отправка SMS, договоры)</p>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <p style="font-size: 16px; color: #f5a623;"><strong>Совет:</strong> Чем подробнее вы опишете процесс
+                    продаж, тем точнее будет настройка!</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function openModal() {
-            document.getElementById('priceModal').classList.add('active');
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
             document.body.style.overflow = 'hidden'; // Prevent scrolling
         }
 
-        function closeModal(event) {
+        function closeModal(event, modalId) {
             // Close only if clicked on overlay or close button
-            if (event.target.id === 'priceModal') {
-                toggleModal();
+            if (event.target.id === modalId) {
+                toggleModal(modalId);
             }
         }
 
-        function toggleModal() {
-            const modal = document.getElementById('priceModal');
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
             if (modal.classList.contains('active')) {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
