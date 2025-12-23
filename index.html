@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMOCRAFT — Профессиональная интеграция AmoCRM</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
     <!-- SEO Meta Tags -->
     <meta name="description"
@@ -25,7 +26,41 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        /* Scroll To Top Button */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #f5a623;
+            color: #1a2332;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            transform: translateY(-5px);
+            background: #ff9800;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -646,20 +681,206 @@
             min-height: 120px;
             resize: vertical;
         }
+
+        /* Styles for Reviews */
+        .reviews-section {
+            background: #f8f9fa;
+            padding: 80px 40px;
+        }
+
+        .review-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border-left: 5px solid #f5a623;
+        }
+
+        .review-author {
+            font-weight: 700;
+            color: #2d5a5e;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Styles for Calculator */
+        .calculator-section {
+            background: white;
+            padding: 80px 40px;
+        }
+
+        .calc-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(45, 90, 94, 0.15);
+            border: 1px solid #eee;
+        }
+
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .calc-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .calc-input,
+        .calc-select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        .calc-checkbox {
+            width: 25px;
+            height: 25px;
+            accent-color: #f5a623;
+            cursor: pointer;
+        }
+
+        .total-price {
+            text-align: right;
+            font-size: 32px;
+            font-weight: 900;
+            color: #2d5a5e;
+            margin-top: 30px;
+        }
+
+        .total-label {
+            font-size: 18px;
+            color: #777;
+            font-weight: 500;
+        }
+
+        /* Price List Modal Styles */
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .price-table th,
+        .price-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .price-table th {
+            color: #2d5a5e;
+            font-weight: 800;
+        }
+
+        .price-table td:last-child {
+            font-weight: 700;
+            color: #f5a623;
+            text-align: right;
+        }
+
+        /* AI Section Styles */
+        .ai-section {
+            position: relative;
+            background: #0f172a;
+            color: white;
+            padding: 100px 40px;
+            overflow: hidden;
+        }
+
+        .ai-title {
+            font-size: 42px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 24px;
+            transition: all 0.4s ease;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: #f5a623;
+        }
+
+        .ai-icon {
+            font-size: 48px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #f5a623 0%, #ff7e5f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Шапка -->
-    <div class="header">
+    <div class="header" style="position: relative; overflow: hidden;">
+        <!-- Particles Container -->
+        <div id="particles-js" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+        </div>
+
         <div class="header-btn-container">
             <button class="header-btn" onclick="openModal('priceModal')">Прайс-лист</button>
             <button class="header-btn" onclick="openModal('scheduleModal')">График работы</button>
             <button class="header-btn" onclick="openModal('tzModal')">Памятка клиенту</button>
             <button class="header-btn" onclick="openModal('contactModal')">Связаться</button>
+            <button class="header-btn" onclick="openModal('authModal')"
+                style="border-color: #f5a623; color: #f5a623;">🔒 Вход</button>
         </div>
-        <div class="container">
+        <div class="container" style="position: relative; z-index: 2;">
             <div class="logo-container">
                 <!-- Усовершенствованный SVG логотип -->
                 <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -720,11 +941,11 @@
             </div>
 
             <div class="stats">
-                <div class="stat-card">
+                <div class="stat-card" data-aos="fade-up">
                     <div class="stat-number">100+</div>
                     <div class="stat-label">Довольных клиентов по всему Казахстану</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-aos="fade-up">
                     <div class="stat-number">100%</div>
                     <div class="stat-label">Поддержка после внедрения</div>
                 </div>
@@ -738,7 +959,7 @@
             <h2 class="section-title">Что мы делаем</h2>
             <div class="services-grid">
                 <!-- Сервис 1 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Настройка воронок и этапов</h3>
                     <ul class="service-list">
                         <li>Создаём воронки под <strong>реальные процессы</strong>, а не «как у всех»</li>
@@ -748,7 +969,7 @@
                 </div>
 
                 <!-- Сервис 2 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Интеграции</h3>
                     <ul class="service-list">
                         <li>Подключаем телефонию, WhatsApp, Instagram, почту, сайт</li>
@@ -758,7 +979,7 @@
                 </div>
 
                 <!-- Сервис 3 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Автоматизация</h3>
                     <ul class="service-list">
                         <li>Настраиваем роботов и триггеры (уведомления, задачи, автоответы)</li>
@@ -768,7 +989,7 @@
                 </div>
 
                 <!-- Сервис 4 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Отчёты и контроль</h3>
                     <ul class="service-list">
                         <li>Настраиваем отчёты <strong>под руководителя</strong></li>
@@ -778,7 +999,7 @@
                 </div>
 
                 <!-- Сервис 5 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Обучение команды</h3>
                     <ul class="service-list">
                         <li>Объясняем менеджерам <strong>как и зачем</strong> пользоваться системой</li>
@@ -788,7 +1009,7 @@
                 </div>
 
                 <!-- Сервис 6 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up">
                     <h3 class="service-title">Поддержка после внедрения</h3>
                     <ul class="service-list">
                         <li><strong>Сопровождаем</strong> после оплаты</li>
@@ -805,270 +1026,544 @@
         <div class="container">
             <h2 class="section-title">Почему выбирают нас</h2>
             <div class="why-grid">
-                <div class="why-card">
+                <div class="why-card" data-aos="fade-up">
                     <div class="why-icon">1</div>
                     <h3 class="why-title">Индивидуальный подход</h3>
                     <p class="why-text">Настраиваем CRM под ваши бизнес-процессы, а не под шаблоны. Каждый проект
                         уникален.</p>
                 </div>
 
-                <div class="why-card">
+                <div class="why-card" data-aos="fade-up">
                     <div class="why-icon">2</div>
                     <h3 class="why-title">Быстрый старт</h3>
                     <p class="why-text">Понимаем, что время - деньги. Запускаем систему в работу максимально быстро.</p>
                 </div>
 
-                <div class="why-card">
+                <div class="why-card" data-aos="fade-up">
                     <div class="why-icon">3</div>
                     <h3 class="why-title">Честность</h3>
                     <p class="why-text">Говорим как есть. Если что-то не нужно - скажем прямо. Не навязываем лишнее.</p>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- Contact Form Section (with Particles) -->
+        <div class="ai-section" id="contact-form-section">
+            <div id="particles-ai" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+            </div>
 
-    <!-- Fuuter content -->
-    <!-- Цены (Old Section Removed) -->
+            <div style="position: relative; z-index: 2;">
+                <h2 class="section-title" style="color: white; margin-bottom: 20px;">Готовы навести порядок в продажах?
+                </h2>
+                <p
+                    style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 50px; font-size: 18px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    Заполните форму, и мы сразу перейдем к обсуждению вашего проекта
+                </p>
 
-    <!-- Форма связи (Embedded at bottom) -->
-    <div class="contact-form-section" id="contact-form-section">
-        <div class="container">
-            <h2 class="section-title" style="color: white; margin-bottom: 20px;">Готовы навести порядок в продажах?</h2>
-            <p
-                style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 50px; font-size: 18px; max-width: 700px; margin-left: auto; margin-right: auto;">
-                Заполните форму, и мы сразу перейдем к обсуждению вашего проекта
-            </p>
+                <div class="form-container">
+                    <form onsubmit="event.preventDefault(); sendToWhatsapp('form');">
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя</label>
+                            <input type="text" id="formName" class="form-input" placeholder="Как к вам обращаться?"
+                                required>
+                        </div>
 
-            <div class="form-container">
-                <form onsubmit="event.preventDefault(); sendToWhatsapp('form');">
+                        <!-- Phone field removed per request -->
+
+                        <div class="form-group">
+                            <label class="form-label">Компания</label>
+                            <input type="text" id="formCompany" class="form-input"
+                                placeholder="Название вашей компании">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Ваш запрос</label>
+                            <textarea id="formRequest" class="form-textarea"
+                                placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button type="submit" class="cta-button"
+                                style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
+                                Связаться в WhatsApp
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Цены (Old Section Removed) -->
+
+        <!-- Reviews Section Removed -->
+
+        <!-- Calculator Section Removed -->
+
+        <!-- Old Contact Section Removed (Moved to Particles Section) -->
+
+        <!-- Футер -->
+        <div class="footer">
+            <div class="container">
+                <div class="footer-logo-container">
+                    <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="hexGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#2d5a5e"></stop>
+                                <stop offset="100%" style="stop-color:#3d6a6e"></stop>
+                            </linearGradient>
+                            <linearGradient id="letterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffa836"></stop>
+                                <stop offset="100%" style="stop-color:#f5a623"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z" fill="url(#hexGrad2)"
+                            stroke="#3d6a6e" stroke-width="4"></path>
+                        <path
+                            d="M85 140 L75 140 L90 70 Q100 55 110 70 L125 140 L115 140 L110 120 L90 120 Z M92 110 L108 110 L100 80 Z"
+                            fill="url(#letterGrad2)"></path>
+                    </svg>
+                    <div class="footer-logo-text">AMOCRAFT</div>
+                </div>
+                <div class="footer-text">
+                    © 2025 AMOCRAFT. Профессиональная интеграция AmoCRM для бизнеса в Казахстане.
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Popup: Price -->
+        <div class="modal-overlay" id="priceModal" onclick="closeModal(event, 'priceModal')">
+            <div class="modal-content">
+                <div class="close-modal-btn" onclick="toggleModal('priceModal')">&times;</div>
+                <div class="modal-icon">📋</div>
+                <h2 class="modal-title">Прайс-лист</h2>
+                <table class="price-table">
+                    <tr>
+                        <th>Услуга</th>
+                        <th>Стоимость</th>
+                    </tr>
+                    <tr>
+                        <td>Пакет "Быстрый старт"</td>
+                        <td>150 000 ₸</td>
+                    </tr>
+                    <tr>
+                        <td>Пакет "Бизнес" (под ключ)</td>
+                        <td>350 000 ₸</td>
+                    </tr>
+                    <tr>
+                        <td>Интеграция WhatsApp/IG</td>
+                        <td>40 000 ₸</td>
+                    </tr>
+                    <tr>
+                        <td>Настройка телефонии</td>
+                        <td>30 000 ₸</td>
+                    </tr>
+                    <tr>
+                        <td>Обучение (1 час)</td>
+                        <td>20 000 ₸</td>
+                    </tr>
+                    <tr>
+                        <td>Тех. сопровождение (мес)</td>
+                        <td>50 000 ₸</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal Popup: Schedule -->
+        <div class="modal-overlay" id="scheduleModal" onclick="closeModal(event, 'scheduleModal')">
+            <div class="modal-content">
+                <div class="close-modal-btn" onclick="toggleModal('scheduleModal')">&times;</div>
+                <div class="modal-icon">🕒</div>
+                <h2 class="modal-title">График работы</h2>
+                <p class="modal-text">
+                    График работы компании:<br>
+                    <strong>с 10:00 до 18:00</strong><br>
+                    с Пн по Пт
+                </p>
+            </div>
+        </div>
+
+        <!-- Modal Popup: TZ Memo -->
+        <div class="modal-overlay" id="tzModal" onclick="closeModal(event, 'tzModal')">
+            <div class="modal-content">
+                <div class="close-modal-btn" onclick="toggleModal('tzModal')">&times;</div>
+                <div class="modal-icon">📝</div>
+                <h2 class="modal-title">Памятка для клиента</h2>
+                <div class="modal-text" style="text-align: left;">
+                    <p><strong>Как составить идеальное ТЗ для CRM?</strong></p>
+                    <p>Чтобы мы могли настроить amoCRM именно под ваш бизнес, ответьте на эти вопросы:</p>
+
+                    <span class="modal-subtitle">1. Зачем вам CRM?</span>
+                    <p>Какую главную проблему вы хотите решить? (напр. теряем заявки, нет контроля продаж)</p>
+
+                    <span class="modal-subtitle">2. Как вы продаете сейчас?</span>
+                    <p>Опишите путь клиента от "увидел рекламу" до "купил".</p>
+                    <p><em>Пример: Заявка -> Звонок -> КП -> Счет -> Оплата.</em></p>
+
+                    <span class="modal-subtitle">3. Откуда приходят клиенты?</span>
+                    <ul>
+                        <li>Сайт</li>
+                        <li>Instagram / соцсети</li>
+                        <li>WhatsApp / Telegram</li>
+                        <li>Звонки</li>
+                    </ul>
+
+                    <span class="modal-subtitle">4. Кто будет работать?</span>
+                    <p>Сколько менеджеров? Есть ли РОП?</p>
+
+                    <span class="modal-subtitle">5. Что автоматизировать?</span>
+                    <p>Какие рутинные действия отнимают время? (напр. отправка SMS, договоры)</p>
+
+                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                    <p style="font-size: 16px; color: #f5a623;"><strong>Совет:</strong> Чем подробнее вы опишете процесс
+                        продаж, тем точнее будет настройка!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Popup: Employee Auth -->
+        <div class="modal-overlay" id="authModal" onclick="closeModal(event, 'authModal')">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="close-modal-btn" onclick="toggleModal('authModal')">&times;</div>
+                <div class="modal-icon">🔐</div>
+                <h2 class="modal-title">Вход для сотрудников</h2>
+                <p class="modal-text">Введите пароль для доступа к внутренним инструментам.</p>
+
+                <form onsubmit="event.preventDefault(); checkAuth();">
                     <div class="form-group">
-                        <label class="form-label">Ваше имя</label>
-                        <input type="text" id="formName" class="form-input" placeholder="Как к вам обращаться?"
-                            required>
+                        <input type="password" id="authPass" class="form-input" placeholder="Пароль доступа"
+                            style="text-align: center; font-size: 24px; letter-spacing: 5px;">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Телефон</label>
-                        <input type="tel" id="formPhone" class="form-input" placeholder="+7 (___) ___-__-__" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Компания</label>
-                        <input type="text" id="formCompany" class="form-input" placeholder="Название вашей компании">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Ваш запрос</label>
-                        <textarea id="formRequest" class="form-textarea"
-                            placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 40px;">
-                        <button type="submit" class="cta-button"
-                            style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
-                            Связаться в WhatsApp
-                        </button>
-                    </div>
+                    <button type="submit" class="cta-button"
+                        style="width: 100%; border: none; cursor: pointer;">Войти</button>
                 </form>
             </div>
         </div>
-    </div>
 
-    <!-- Футер -->
-    <div class="footer">
-        <div class="container">
-            <div class="footer-logo-container">
-                <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="hexGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2d5a5e"></stop>
-                            <stop offset="100%" style="stop-color:#3d6a6e"></stop>
-                        </linearGradient>
-                        <linearGradient id="letterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#ffa836"></stop>
-                            <stop offset="100%" style="stop-color:#f5a623"></stop>
-                        </linearGradient>
-                    </defs>
-                    <path d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z" fill="url(#hexGrad2)" stroke="#3d6a6e"
-                        stroke-width="4"></path>
-                    <path
-                        d="M85 140 L75 140 L90 70 Q100 55 110 70 L125 140 L115 140 L110 120 L90 120 Z M92 110 L108 110 L100 80 Z"
-                        fill="url(#letterGrad2)"></path>
-                </svg>
-                <div class="footer-logo-text">AMOCRAFT</div>
-            </div>
-            <div class="footer-text">
-                © 2025 AMOCRAFT. Профессиональная интеграция AmoCRM для бизнеса в Казахстане.
-            </div>
-        </div>
-    </div>
+        <!-- Modal Popup: Contact Form -->
+        <div class="modal-overlay" id="contactModal" onclick="closeModal(event, 'contactModal')">
+            <div class="modal-content">
+                <div class="close-modal-btn" onclick="toggleModal('contactModal')">&times;</div>
+                <div class="modal-icon">✉️</div>
+                <h2 class="modal-title">Оставьте заявку</h2>
+                <p style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 30px; font-size: 16px;">
+                    Заполните форму, и мы сразу перейдем к обсуждению вашего проекта в WhatsApp
+                </p>
+                <div class="form-container">
+                    <form onsubmit="event.preventDefault(); sendToWhatsapp('modal');">
+                        <div class="form-group">
+                            <label class="form-label">Ваше имя</label>
+                            <input type="text" id="modalFormName" class="form-input" placeholder="Как к вам обращаться?"
+                                required>
+                        </div>
 
-    <!-- Modal Popup: Price -->
-    <div class="modal-overlay" id="priceModal" onclick="closeModal(event, 'priceModal')">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="toggleModal('priceModal')">&times;</div>
-            <div class="modal-icon">📋</div>
-            <h2 class="modal-title">Прайс-лист</h2>
-            <p class="modal-text">Данный раздел скоро появится</p>
-        </div>
-    </div>
+                        <div class="form-group">
+                            <label class="form-label">Телефон</label>
+                            <input type="tel" id="modalFormPhone" class="form-input" placeholder="+7 (___) ___-__-__"
+                                required>
+                        </div>
 
-    <!-- Modal Popup: Schedule -->
-    <div class="modal-overlay" id="scheduleModal" onclick="closeModal(event, 'scheduleModal')">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="toggleModal('scheduleModal')">&times;</div>
-            <div class="modal-icon">🕒</div>
-            <h2 class="modal-title">График работы</h2>
-            <p class="modal-text">
-                График работы компании:<br>
-                <strong>с 10:00 до 18:00</strong><br>
-                с Пн по Пт
-            </p>
-        </div>
-    </div>
+                        <div class="form-group">
+                            <label class="form-label">Компания</label>
+                            <input type="text" id="modalFormCompany" class="form-input"
+                                placeholder="Название вашей компании">
+                        </div>
 
-    <!-- Modal Popup: TZ Memo -->
-    <div class="modal-overlay" id="tzModal" onclick="closeModal(event, 'tzModal')">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="toggleModal('tzModal')">&times;</div>
-            <div class="modal-icon">📝</div>
-            <h2 class="modal-title">Памятка для клиента</h2>
-            <div class="modal-text" style="text-align: left;">
-                <p><strong>Как составить идеальное ТЗ для CRM?</strong></p>
-                <p>Чтобы мы могли настроить amoCRM именно под ваш бизнес, ответьте на эти вопросы:</p>
+                        <div class="form-group">
+                            <label class="form-label">Ваш запрос</label>
+                            <textarea id="modalFormRequest" class="form-textarea"
+                                placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
+                        </div>
 
-                <span class="modal-subtitle">1. Зачем вам CRM?</span>
-                <p>Какую главную проблему вы хотите решить? (напр. теряем заявки, нет контроля продаж)</p>
-
-                <span class="modal-subtitle">2. Как вы продаете сейчас?</span>
-                <p>Опишите путь клиента от "увидел рекламу" до "купил".</p>
-                <p><em>Пример: Заявка -> Звонок -> КП -> Счет -> Оплата.</em></p>
-
-                <span class="modal-subtitle">3. Откуда приходят клиенты?</span>
-                <ul>
-                    <li>Сайт</li>
-                    <li>Instagram / соцсети</li>
-                    <li>WhatsApp / Telegram</li>
-                    <li>Звонки</li>
-                </ul>
-
-                <span class="modal-subtitle">4. Кто будет работать?</span>
-                <p>Сколько менеджеров? Есть ли РОП?</p>
-
-                <span class="modal-subtitle">5. Что автоматизировать?</span>
-                <p>Какие рутинные действия отнимают время? (напр. отправка SMS, договоры)</p>
-
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-                <p style="font-size: 16px; color: #f5a623;"><strong>Совет:</strong> Чем подробнее вы опишете процесс
-                    продаж, тем точнее будет настройка!</p>
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button type="submit" class="cta-button"
+                                style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
+                                Связаться в WhatsApp
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Popup: Contact Form -->
-    <div class="modal-overlay" id="contactModal" onclick="closeModal(event, 'contactModal')">
-        <div class="modal-content">
-            <div class="close-modal-btn" onclick="toggleModal('contactModal')">&times;</div>
-            <div class="modal-icon">✉️</div>
-            <h2 class="modal-title">Оставьте заявку</h2>
-            <p style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 30px; font-size: 16px;">
-                Заполните форму, и мы сразу перейдем к обсуждению вашего проекта в WhatsApp
-            </p>
-            <div class="form-container">
-                <form onsubmit="event.preventDefault(); sendToWhatsapp('modal');">
-                    <div class="form-group">
-                        <label class="form-label">Ваше имя</label>
-                        <input type="text" id="modalFormName" class="form-input" placeholder="Как к вам обращаться?"
-                            required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Телефон</label>
-                        <input type="tel" id="modalFormPhone" class="form-input" placeholder="+7 (___) ___-__-__"
-                            required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Компания</label>
-                        <input type="text" id="modalFormCompany" class="form-input"
-                            placeholder="Название вашей компании">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Ваш запрос</label>
-                        <textarea id="modalFormRequest" class="form-textarea"
-                            placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 40px;">
-                        <button type="submit" class="cta-button"
-                            style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
-                            Связаться в WhatsApp
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
-
-        function closeModal(event, modalId) {
-            // Close only if clicked on overlay or close button
-            if (event.target.id === modalId) {
-                toggleModal(modalId);
-            }
-        }
-
-        function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal.classList.contains('active')) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            } else {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-    </script>
-    <script>
-        // WhatsApp Sender
-        function sendToWhatsapp(source) {
-            let name, phone, company, request;
-
-            if (source === 'modal') {
-                name = document.getElementById('modalFormName').value;
-                phone = document.getElementById('modalFormPhone').value;
-                company = document.getElementById('modalFormCompany').value;
-                request = document.getElementById('modalFormRequest').value;
-            } else {
-                // This else block would handle any other forms if they existed,
-                // but with the current changes, only the modal form remains.
-                // For robustness, if a non-modal form were added later,
-                // its elements would need unique IDs and this logic would expand.
-                // For now, this path might not be strictly necessary if all forms are modals.
-                // However, keeping it as per the instruction's diff.
-                name = document.getElementById('formName').value; // These IDs no longer exist in the main document
-                phone = document.getElementById('formPhone').value; // but are kept as per the diff.
-                company = document.getElementById('formCompany').value;
-                request = document.getElementById('formRequest').value;
+        <script>
+            function openModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
             }
 
-            // Format the message
-            const text = `Здравствуйте, пишу вам через сайт amocraft.\nМеня зовут ${name}, компания ${company}.\nМои контакты: ${phone}.\nИду к вам с запросом: ${request}`;
+            function closeModal(event, modalId) {
+                // Close only if clicked on overlay or close button
+                if (event.target.id === modalId) {
+                    toggleModal(modalId);
+                }
+            }
 
-            // Encode for URL
-            const encodedText = encodeURIComponent(text);
-            const url = `https://wa.me/77782573264?text=${encodedText}`;
+            function toggleModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        </script>
+        <!-- Scroll To Top Button HTML -->
+        <button class="scroll-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 
-            // Open in new tab
-            window.open(url, '_blank');
-        }
-    </script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script>
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+
+            // Scroll to top button visibility
+            window.addEventListener('scroll', function () {
+                const btn = document.querySelector('.scroll-top-btn');
+                if (window.scrollY > 300) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+
+            // Initialize Particles
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 60,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.2,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.5
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        </script>
+
+        <script>
+            // WhatsApp Sender
+            function sendToWhatsapp(source) {
+                let name, phone, company, request;
+
+                if (source === 'modal') {
+                    name = document.getElementById('modalFormName').value;
+                    phone = document.getElementById('modalFormPhone').value;
+                    company = document.getElementById('modalFormCompany').value;
+                    request = document.getElementById('modalFormRequest').value;
+                } else {
+                    // Main site form
+                    name = document.getElementById('formName').value;
+                    phone = "Не указан"; // Phone field removed from main form
+                    company = document.getElementById('formCompany').value;
+                    request = document.getElementById('formRequest').value;
+                }
+
+                // Format the message
+                const text = `Здравствуйте, пишу вам через сайт amocraft.\nМеня зовут ${name}, компания ${company}.\nМои контакты: ${phone}.\nИду к вам с запросом: ${request}`;
+
+                // Encode for URL
+                const encodedText = encodeURIComponent(text);
+                const url = `https://wa.me/77782573264?text=${encodedText}`;
+
+                // Open in new tab
+                window.open(url, '_blank');
+            }
+        </script>
+        <script>
+            function checkAuth() {
+                const pass = document.getElementById('authPass').value;
+                // Obfuscated check (Base64)
+                // 'admin' -> YWRtaW4=
+                // 'amo2025' -> YW1vMjAyNQ==
+                try {
+                    const encoded = btoa(pass);
+                    if (encoded === 'aWhhdGVhbW9jcm0=') {
+                        // Redirect to the Hub
+                        window.location.href = '../secret_hub.html';
+                    } else {
+                        alert('Неверный пароль!');
+                        document.getElementById('authPass').value = '';
+                        document.getElementById('authPass').focus();
+                    }
+                } catch (e) {
+                    alert('Ошибка ввода');
+                }
+            }
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+        <script>
+            // Initialize VanillaTilt for 3D effect
+            VanillaTilt.init(document.querySelectorAll(".service-card, .stat-card, .review-card"), {
+                max: 10,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.3,
+                scale: 1.05
+            });
+
+            // Number Counter Animation
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    // Handle the "+" or "%" suffix
+                    const isPercent = obj.innerHTML.includes('%');
+                    const isPlus = obj.innerHTML.includes('+');
+
+                    let value = Math.floor(progress * (end - start) + start);
+
+                    if (isPercent) obj.innerHTML = value + "%";
+                    else if (isPlus) obj.innerHTML = value + "+";
+                    else obj.innerHTML = value + (isPlus ? "+" : ""); // Fallback
+
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            // Trigger animation when stats come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const counters = entry.target.querySelectorAll('.stat-number');
+                        counters.forEach((counter) => {
+                            const originalText = counter.innerText;
+                            const target = parseInt(originalText); // Extract number
+
+                            // Set specific flags for formatting
+                            if (originalText.includes('%')) counter.innerText = "0%";
+                            else if (originalText.includes('+')) counter.innerText = "0+";
+                            else counter.innerText = "0";
+
+                            animateValue(counter, 0, target, 2000);
+                        });
+                        observer.unobserve(entry.target); // Run only once
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const statsSection = document.querySelector('.stats');
+            if (statsSection) observer.observe(statsSection);
+
+            // Initialize AI Particles
+            particlesJS("particles-ai", {
+                "particles": {
+                    "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#f5a623" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.3, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#f5a623", "opacity": 0.2, "width": 1 },
+                    "move": { "enable": true, "speed": 1 }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }
+                },
+                "retina_detect": true
+            });
+        </script>
 </body>
 
 </html>
