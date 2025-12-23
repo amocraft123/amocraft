@@ -1,0 +1,16 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2d5a5e"></stop>
+            <stop offset="100%" style="stop-color:#3d6a6e"></stop>
+        </linearGradient>
+        <linearGradient id="letterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffa836"></stop>
+            <stop offset="100%" style="stop-color:#f5a623"></stop>
+        </linearGradient>
+    </defs>
+    <path d="M100 20 L170 60 L170 140 L100 180 L30 140 L30 60 Z" fill="url(#hexGrad)" stroke="#3d6a6e" stroke-width="4"></path>
+    <path d="M100 35 L160 70 L160 130 L100 165 L40 130 L40 70 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"></path>
+    <path d="M85 140 L75 140 L90 70 Q100 55 110 70 L125 140 L115 140 L110 120 L90 120 Z M92 110 L108 110 L100 80 Z" fill="url(#letterGrad)" stroke="#ffa836" stroke-width="2" stroke-linejoin="round"></path>
+    <path d="M95 75 Q100 65 105 75" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round"></path>
+</svg>

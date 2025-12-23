@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMOCRAFT — Профессиональная интеграция AmoCRM</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 
     <!-- SEO Meta Tags -->
     <meta name="description"
@@ -1434,12 +1434,14 @@
         <script>
             function checkAuth() {
                 const pass = document.getElementById('authPass').value;
-                // Security check
+                // Obfuscated check (Base64)
+                // 'admin' -> YWRtaW4=
+                // 'amo2025' -> YW1vMjAyNQ==
                 try {
                     const encoded = btoa(pass);
                     if (encoded === 'aWhhdGVhbW9jcm0=') {
                         // Redirect to the Hub
-                        window.location.href = 'secret_hub.html';
+                        window.location.href = '../secret_hub.html';
                     } else {
                         alert('Неверный пароль!');
                         document.getElementById('authPass').value = '';

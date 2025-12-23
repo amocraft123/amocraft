@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор ТЗ - Amocraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #2d5a5e;
+            --accent: #f5a623;
+            --bg: #f4f6f8;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 40px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* Sidebar Controls */
+        .controls {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .checkbox-item input {
+            margin-right: 10px;
+            accent-color: var(--accent);
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .btn-generate:hover {
+            background: #3d6a6e;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #777;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* Document Preview */
+        .preview-container {
+            background: white;
+            padding: 60px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            min-height: 800px;
+        }
+
+        .doc-header {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .doc-title {
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .doc-section {
+            margin-bottom: 30px;
+        }
+
+        .doc-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .doc-list {
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        .doc-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="workspace">
+        <!-- Controls -->
+        <div class="controls">
+            <h2 style="margin-top: 0;">Конструктор ТЗ</h2>
+
+            <div class="control-group">
+                <span class="control-label">1. Структура</span>
+                <label class="checkbox-item"><input type="checkbox" id="chkUsers" checked> Пользователи и Права</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkPipelines" checked> Воронки продажа</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkFields"> Настройка полей</label>
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">2. Каналы связи</span>
+                <label class="checkbox-item"><input type="checkbox" id="chkWhatsapp"> WhatsApp (Wazzup/i2crm)</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkTelephony"> Телефония
+                    (Sipuni/OnlinePBX)</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkInsta"> Instagram Direct</label>
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">3. Автоматизация</span>
+                <label class="checkbox-item"><input type="checkbox" id="chkBots"> Salesbot (Приветствие)</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkTasks"> Авто-задачи менеджерам</label>
+                <label class="checkbox-item"><input type="checkbox" id="chkDocs"> Генерация документов</label>
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">4. Свой раздел (Ручной ввод)</span>
+                <input type="text" id="customTitle" class="form-input" placeholder="Заголовок раздела"
+                    style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                <textarea id="customContent" class="form-input" placeholder="Содержание (пункты...)"
+                    style="width:100%; height:80px; padding:10px; border:1px solid #ddd; border-radius:8px; font-family:inherit;"></textarea>
+                <button class="btn-add-custom" onclick="addCustomSection()"
+                    style="width:100%; margin-top:10px; padding:10px; background:#f5a623; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">+
+                    Добавить в ТЗ</button>
+            </div>
+
+            <button class="btn-generate" onclick="generatePDF()">Скачать PDF (ТЗ)</button>
+            <a href="../secret_hub.html" class="btn-back">← Вернуться в Hub</a>
+        </div>
+
+        <!-- Document Preview (A4 Paper Style) -->
+        <div class="preview-container" id="document-preview">
+            <div class="doc-header">
+                <div class="doc-title">Техническое Задание</div>
+                <p>на внедрение и настройку CRM-системы amoCRM</p>
+            </div>
+
+            <div id="preview-content">
+                <!-- Dynamic Sections will appear here -->
+            </div>
+
+            <!-- More sections will be toggled by JS -->
+        </div>
+    </div>
+
+    <script>
+        // Content Definitions
+        const sections = {
+            'chkUsers': {
+                id: 'sec-users',
+                title: '1. Настройка структуры аккаунта',
+                content: `
+                <li>Регистрация аккаунта и приглашение пользователей.</li>
+                <li>Настройка иерархии прав доступа (Администратор, РОП, Менеджер).</li>
+                <li>Заполнение профилей сотрудников (фото, контакты).</li>`
+            },
+            'chkPipelines': {
+                id: 'sec-pipelines',
+                title: '2. Воронки продаж',
+                content: `
+                <li>Настройка воронки "Первичные продажи".</li>
+                <li>Настройка этапов: "Не разобранное", "Квалификация", "КП отправлено", "Договор", "Оплата".</li>
+                <li>Настройка причин отказов.</li>`
+            },
+            'chkFields': {
+                id: 'sec-fields',
+                title: '3. Карточки сделок и контактов',
+                content: `
+                <li>Настройка полей сегментации (Отрасль, Источник, Бюджет).</li>
+                <li>Настройка обязательности заполнения полей на этапах.</li>
+                <li>Группировка полей по разделам.</li>`
+            },
+            'chkWhatsapp': {
+                id: 'sec-wa',
+                title: '4. Интеграция мессенджеров',
+                content: `
+                <li>Подключение официальной интеграции WhatsApp (Wazzup/i2crm).</li>
+                <li>Настройка распределения заявок на ответственных.</li>
+                <li>Подключение Instagram Direct.</li>`
+            },
+            'chkTelephony': {
+                id: 'sec-tel',
+                title: '5. IP-телефония',
+                content: `
+                <li>Интеграция с провайдером (Sipuni / OnlinePBX / Binotel).</li>
+                <li>Настройка всплывающей карточки при звонке.</li>
+                <li>Автоматическое создание сделок при пропущенных.</li>
+                <li>Сохранение записи разговоров в карточке.</li>`
+            },
+            'chkBots': {
+                id: 'sec-bots',
+                title: '6. Salesbot и автоматизация',
+                content: `
+                <li>Бот "Приветствие" для новых заявок из мессенджеров.</li>
+                <li>Автоматическая смена этапа при ответе клиента.</li>
+                <li>Бот "Контроль качества" (NPS) после успешной сделки.</li>`
+            },
+            'chkTasks': {
+                id: 'sec-tasks',
+                title: '7. Автоматические задачи',
+                content: `
+                <li>Задача "Связаться с клиентом" при попадании в "Не разобранное".</li>
+                <li>Задача "Отправить КП" через 15 минут после квалификации.</li>
+                <li>Задача "Контроль оплаты" за 1 день до даты в счете.</li>`
+            },
+            'chkDocs': {
+                id: 'sec-docs',
+                title: '8. Генерация документов',
+                content: `
+                <li>Настройка шаблона "Договор на услуги".</li>
+                <li>Настройка шаблона "Счет на оплату".</li>
+                <li>Автозаполнение реквизитов из карточки компании.</li>`
+            }
+        };
+
+        // Initialize listeners
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(chk => {
+            chk.addEventListener('change', updatePreview);
+        });
+
+        // Initial render
+        updatePreview();
+
+        // Custom Sections Array
+        let customSections = [];
+
+        function addCustomSection() {
+            const title = document.getElementById('customTitle').value;
+            const content = document.getElementById('customContent').value;
+
+            if (title && content) {
+                customSections.push({
+                    title: title,
+                    content: content.replace(/\n/g, '<br>') // Simple newline to BR
+                });
+                // Clear inputs
+                document.getElementById('customTitle').value = '';
+                document.getElementById('customContent').value = '';
+
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const container = document.getElementById('preview-content');
+            container.innerHTML = ''; // Clear current
+
+            let counter = 1;
+
+            // 1. Standard Checkboxes
+            checkboxes.forEach(chk => {
+                if (chk.checked && sections[chk.id]) {
+                    const data = sections[chk.id];
+                    const sectionHtml = `
+                    <div class="doc-section" id="${data.id}">
+                        <div class="doc-section-title">${counter}. ${data.title.split('. ')[1]}</div>
+                        <ul class="doc-list">
+                            ${data.content}
+                        </ul>
+                    </div>
+                `;
+                    container.insertAdjacentHTML('beforeend', sectionHtml);
+                    counter++;
+                }
+            });
+
+            // 2. Custom Sections
+            customSections.forEach((sec, index) => {
+                const sectionHtml = `
+                <div class="doc-section">
+                    <div class="doc-section-title">${counter}. ${sec.title} <span style="font-size:12px; color:red; cursor:pointer;" onclick="removeCustom(${index})">[x]</span></div>
+                    <div class="doc-list" style="padding-left:20px;">
+                        ${sec.content}
+                    </div>
+                </div>
+            `;
+                container.insertAdjacentHTML('beforeend', sectionHtml);
+                counter++;
+            });
+
+            if (container.innerHTML === '') {
+                container.innerHTML = '<p style="text-align:center; color:#999; margin-top:50px;">Выберите пункты или добавьте свой раздел...</p>';
+            }
+        }
+
+        function removeCustom(index) {
+            customSections.splice(index, 1);
+            updatePreview();
+        }
+
+        function generatePDF() {
+            const element = document.getElementById('document-preview');
+            const opt = {
+                margin: 15,
+                filename: 'TZ_Amocraft.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Button Feedback
+            const btn = document.querySelector('.btn-generate');
+            const oldText = btn.innerText;
+            btn.innerText = '⏳ Создаю...';
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                btn.innerText = oldText;
+            });
+        }
+    </script>
+
+</body>
+
+</html>
