@@ -529,17 +529,135 @@
                 display: flex;
             }
         }
+
+        /* Ticker Styles */
+        .ticker-wrapper {
+            width: 100%;
+            background-color: #f5a623;
+            color: #1a2332;
+            overflow: hidden;
+            border-bottom: 2px solid #1a2332;
+            position: relative;
+            z-index: 1001;
+            /* Ensure above everything */
+        }
+
+        .ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 8px 0;
+            display: flex;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 30s linear infinite;
+            padding-left: 100%;
+            /* Start from right */
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .ticker-content a {
+            color: #1a2332;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(26, 35, 50, 0.3);
+            margin: 0 5px;
+            transition: all 0.2s;
+        }
+
+        .ticker-content a:hover {
+            border-bottom-color: #1a2332;
+            color: maroon;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 30px;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Contact Form */
+        .contact-form-section {
+            background: linear-gradient(135deg, #1a2332 0%, #2d3e50 100%);
+            padding: 80px 40px;
+            color: white;
+            position: relative;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #f5a623;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            color: #1a2332;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #f5a623;
+            box-shadow: 0 0 15px rgba(245, 166, 35, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
     </style>
 </head>
 
 <body>
+
     <!-- Шапка -->
     <div class="header">
         <div class="header-btn-container">
             <button class="header-btn" onclick="openModal('priceModal')">Прайс-лист</button>
             <button class="header-btn" onclick="openModal('scheduleModal')">График работы</button>
             <button class="header-btn" onclick="openModal('tzModal')">Памятка клиенту</button>
-            <a href="https://wa.me/77782573264" target="_blank" class="header-btn">Связаться</a>
+            <button class="header-btn" onclick="openModal('contactModal')">Связаться</button>
         </div>
         <div class="container">
             <div class="logo-container">
@@ -579,6 +697,8 @@
             <div class="tagline">Профессиональная интеграция и настройка AmoCRM</div>
         </div>
     </div>
+
+
 
     <!-- О компании -->
     <div class="about-section">
@@ -710,12 +830,47 @@
     <!-- Fuuter content -->
     <!-- Цены (Old Section Removed) -->
 
-    <!-- CTA -->
-    <div class="cta-section">
+    <!-- Форма связи (Embedded at bottom) -->
+    <div class="contact-form-section" id="contact-form-section">
         <div class="container">
-            <h2 class="cta-title">Готовы навести порядок в продажах?</h2>
-            <p class="cta-text">Свяжитесь с нами и получите профессиональную консультацию</p>
-            <a href="https://wa.me/77782573264" target="_blank" class="cta-button">Получить консультацию</a>
+            <h2 class="section-title" style="color: white; margin-bottom: 20px;">Готовы навести порядок в продажах?</h2>
+            <p
+                style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 50px; font-size: 18px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                Заполните форму, и мы сразу перейдем к обсуждению вашего проекта
+            </p>
+
+            <div class="form-container">
+                <form onsubmit="event.preventDefault(); sendToWhatsapp('form');">
+                    <div class="form-group">
+                        <label class="form-label">Ваше имя</label>
+                        <input type="text" id="formName" class="form-input" placeholder="Как к вам обращаться?"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" id="formPhone" class="form-input" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Компания</label>
+                        <input type="text" id="formCompany" class="form-input" placeholder="Название вашей компании">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ваш запрос</label>
+                        <textarea id="formRequest" class="form-textarea"
+                            placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button type="submit" class="cta-button"
+                            style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
+                            Связаться в WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -810,6 +965,52 @@
         </div>
     </div>
 
+    <!-- Modal Popup: Contact Form -->
+    <div class="modal-overlay" id="contactModal" onclick="closeModal(event, 'contactModal')">
+        <div class="modal-content">
+            <div class="close-modal-btn" onclick="toggleModal('contactModal')">&times;</div>
+            <div class="modal-icon">✉️</div>
+            <h2 class="modal-title">Оставьте заявку</h2>
+            <p style="text-align: center; color: rgba(255,255,255,0.8); margin-bottom: 30px; font-size: 16px;">
+                Заполните форму, и мы сразу перейдем к обсуждению вашего проекта в WhatsApp
+            </p>
+            <div class="form-container">
+                <form onsubmit="event.preventDefault(); sendToWhatsapp('modal');">
+                    <div class="form-group">
+                        <label class="form-label">Ваше имя</label>
+                        <input type="text" id="modalFormName" class="form-input" placeholder="Как к вам обращаться?"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" id="modalFormPhone" class="form-input" placeholder="+7 (___) ___-__-__"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Компания</label>
+                        <input type="text" id="modalFormCompany" class="form-input"
+                            placeholder="Название вашей компании">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ваш запрос</label>
+                        <textarea id="modalFormRequest" class="form-textarea"
+                            placeholder="Опишите кратко вашу задачу или вопрос..."></textarea>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button type="submit" class="cta-button"
+                            style="border: none; cursor: pointer; width: 100%; font-size: 20px;">
+                            Связаться в WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         function openModal(modalId) {
             document.getElementById(modalId).classList.add('active');
@@ -832,6 +1033,40 @@
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
+        }
+    </script>
+    <script>
+        // WhatsApp Sender
+        function sendToWhatsapp(source) {
+            let name, phone, company, request;
+
+            if (source === 'modal') {
+                name = document.getElementById('modalFormName').value;
+                phone = document.getElementById('modalFormPhone').value;
+                company = document.getElementById('modalFormCompany').value;
+                request = document.getElementById('modalFormRequest').value;
+            } else {
+                // This else block would handle any other forms if they existed,
+                // but with the current changes, only the modal form remains.
+                // For robustness, if a non-modal form were added later,
+                // its elements would need unique IDs and this logic would expand.
+                // For now, this path might not be strictly necessary if all forms are modals.
+                // However, keeping it as per the instruction's diff.
+                name = document.getElementById('formName').value; // These IDs no longer exist in the main document
+                phone = document.getElementById('formPhone').value; // but are kept as per the diff.
+                company = document.getElementById('formCompany').value;
+                request = document.getElementById('formRequest').value;
+            }
+
+            // Format the message
+            const text = `Здравствуйте, пишу вам через сайт amocraft.\nМеня зовут ${name}, компания ${company}.\nМои контакты: ${phone}.\nИду к вам с запросом: ${request}`;
+
+            // Encode for URL
+            const encodedText = encodeURIComponent(text);
+            const url = `https://wa.me/77782573264?text=${encodedText}`;
+
+            // Open in new tab
+            window.open(url, '_blank');
         }
     </script>
 </body>
